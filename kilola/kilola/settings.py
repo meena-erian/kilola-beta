@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-kesfro%w-xs6=t2wm(cavcu8j_f(-kbbz63*_r-mz1m6zfq&k#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['kilola-beta.portacode.com']
 
 # Application definition
 
