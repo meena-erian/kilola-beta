@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from . import views
 from django.views.decorators.cache import cache_page
-from rest_framework.authtoken import views
+from rest_framework.authtoken import views as rest_auth_views
 from django.views.generic import TemplateView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -24,9 +24,9 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path('login', views.obtain_auth_token),
-
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+   path('login', rest_auth_views.obtain_auth_token),
+   path('user', views.UserAPIView.as_view(), name='User API'),
+   re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+   re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+   re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
