@@ -22,8 +22,15 @@ class Crop(models.Model):
         return self.name
 
 
+class Farmer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return self.user.__str__()
+
+
 class Farm(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.RESTRICT)
+    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE)
     location = PlainLocationField(based_fields=['city'], zoom=7)
     size = models.DecimalField(
         'How many acres is this farm',
@@ -57,13 +64,16 @@ class Batch(models.Model):
     )
 
 
-class BuyerProfile(models.Model):
+class Buyer(models.Model):
     user = models.ForeignKey(User, on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return self.user.__str__()
 
 
 class BatchReservation(models.Model):
     batch = models.ForeignKey(Batch, on_delete=models.RESTRICT)
-    buyer = models.ForeignKey(BuyerProfile, on_delete=models.RESTRICT)
+    buyer = models.ForeignKey(Buyer, on_delete=models.RESTRICT)
     acres = models.DecimalField(
         "The amount is reserved in acres because\
         the farm area is the only fact on the ground",
