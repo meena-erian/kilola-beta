@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 kilola/api/migrations/**
+email_credentials.py
+server_credentials.py

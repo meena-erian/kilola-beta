@@ -4,7 +4,29 @@ Django app for the kilola platform
 
 ## Setup Instructions
 
-To build this project, first make sure you have docker and compose installed and then run
+To build this project, first make sure you have docker and compose installed and then
+add the following two configuration files:
+
+[/kilola/email_credentials.py](/kilola/email_credentials.py)
+
+Example Content:
+
+```py
+port = 25
+host = 'smtp.somedomain.com'
+user = 'user@example.com'
+password = 'some smtp user password'
+```
+
+[/kilola/server_credentials.py](/kilola/server_credentials.py)
+
+Example content:
+
+```py
+hash_key = 'some complicated hach key'
+```
+
+and finally run
 ```
 docker-compose up
 ```
