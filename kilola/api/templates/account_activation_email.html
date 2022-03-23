@@ -1,4 +1,7 @@
 {% autoescape off %}
 Hi {{ user.username }},
-Welcome to kilola {{ token }}
+Welcome to kilola 
+
+Please use the below link to activate your account
+https://{{ domain }}/resetpassword/{{ uid }}/{{ token }}
 {% endautoescape %}

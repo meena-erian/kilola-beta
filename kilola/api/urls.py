@@ -22,6 +22,11 @@ urlpatterns = [
     path('login', rest_auth_views.obtain_auth_token),
     path('user', views.UserAPIView.as_view(), name='User API'),
     path('register', views.SignUpView.as_view(), name='SignUp API'),
+    path(
+        'activate',
+        views.ConfirmEmailView.as_view(),
+        name='Account Activation API'
+    ),
     re_path(
         r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0),

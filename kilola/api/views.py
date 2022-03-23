@@ -1,5 +1,9 @@
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, SignUpSerializer
+from .serializers import (
+    UserSerializer,
+    SignUpSerializer,
+    ConfirmEmailSerializer
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.shortcuts import get_object_or_404
@@ -21,6 +25,13 @@ class UserAPIView(generics.RetrieveAPIView):
 
 class SignUpView(generics.CreateAPIView):
     serializer_class = SignUpSerializer
+
+    def post(self, request):
+        return self.create(request)
+
+
+class ConfirmEmailView(generics.CreateAPIView):
+    serializer_class = ConfirmEmailSerializer
 
     def post(self, request):
         return self.create(request)
