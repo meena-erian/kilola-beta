@@ -43,10 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'api',
-    'location_field.apps.DefaultConfig',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    'location_field.apps.DefaultConfig'
 ]
 
 MIDDLEWARE = [

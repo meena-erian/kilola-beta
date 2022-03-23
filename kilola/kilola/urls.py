@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+# from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.account.urls')),
+    path('resetpassword/<uidb64>/<token>', views.confirm_email),
     path('api/v1/', include('api.urls')),
     path('', views.Home.as_view()),
 ]
