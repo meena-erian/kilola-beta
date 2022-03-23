@@ -11,6 +11,20 @@ from kilola import email_credentials
 
 
 class UserSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField('get_type')
+
+    def get_type(self, data):
+        has_farmer_profile = len(data.farmer_set.all()) > 0
+        has_buyer_profile = len(data.buyer_set.all()) > 0
+        if has_farmer_profile and not has_buyer_profile:
+            return 'farmer'
+        if has_buyer_profile and not has_farmer_profile:
+            return 'buyer'
+        if has_farmer_profile and has_buyer_profile:
+            return 'buymer'
+        else:
+            return ''
+
     class Meta:
         model = User
         fields = [
@@ -25,7 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active",
             "date_joined",
             "groups",
-            "user_permissions"
+            "user_permissions",
+            "type"
         ]
 
 
