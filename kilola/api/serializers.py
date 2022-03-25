@@ -4,9 +4,8 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
-# from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
-from .models import Farmer, Buyer
+from .models import Farmer, Buyer, Farm
 from kilola import email_credentials
 
 
@@ -131,3 +130,9 @@ class ConfirmEmailSerializer(serializers.Serializer):
         else:
             serializers.ValidationError('Invalid activation link')
         return data
+
+
+class UserFarmSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Farm
+        fields = ['name', 'location', 'size']

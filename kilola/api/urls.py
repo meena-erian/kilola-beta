@@ -22,6 +22,7 @@ urlpatterns = [
     path('login', rest_auth_views.obtain_auth_token),
     path('user', views.UserAPIView.as_view(), name='User API'),
     path('register', views.SignUpView.as_view(), name='SignUp API'),
+    path('user/farm', views.UserFarmView.as_view(), name='SignUp API'),
     path(
         'activate',
         views.ConfirmEmailView.as_view(),

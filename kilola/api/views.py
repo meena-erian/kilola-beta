@@ -2,13 +2,16 @@ from django.contrib.auth.models import User
 from .serializers import (
     UserSerializer,
     SignUpSerializer,
-    ConfirmEmailSerializer
+    ConfirmEmailSerializer,
+    UserFarmSerializer
 )
+from .models import Farm
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, mixins
+from rest_framework.serializers import ValidationError
 
 
 class UserAPIView(generics.RetrieveAPIView):
@@ -32,6 +35,31 @@ class SignUpView(generics.CreateAPIView):
 
 class ConfirmEmailView(generics.CreateAPIView):
     serializer_class = ConfirmEmailSerializer
+
+    def post(self, request):
+        return self.create(request)
+
+
+class UserFarmView(
+        generics.GenericAPIView,
+        mixins.ListModelMixin,
+        mixins.CreateModelMixin):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = UserFarmSerializer
+
+    def get_queryset(self):
+        return Farm.objects.filter(farmer__user=self.request.user)
+
+    def perform_create(self, serializer):
+        farmer = self.request.user.farmer_set.all()
+        if not len(farmer):
+            raise ValidationError(
+                'Seems like authenticated user is not a farmer')
+        serializer.save(farmer=farmer)
+
+    def get(self, request):
+        return self.list(request)
 
     def post(self, request):
         return self.create(request)

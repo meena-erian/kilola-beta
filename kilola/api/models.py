@@ -30,6 +30,7 @@ class Farmer(models.Model):
 
 
 class Farm(models.Model):
+    name = models.CharField('Farm name', max_length=200)
     farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE)
     location = PlainLocationField(based_fields=['city'], zoom=7)
     size = models.DecimalField(
