@@ -135,11 +135,11 @@ class ConfirmEmailSerializer(serializers.Serializer):
 class UserFarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farm
-        fields = ['name', 'location', 'size']
+        fields = ['id', 'name', 'location', 'size']
 
 
 class UserBatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Batch
-        fields = ['crop', 'farm', 'area', 'weight', 'planting_date',
+        fields = ['id', 'crop', 'farm', 'area', 'weight', 'planting_date',
                   'harvesting_date', 'description']

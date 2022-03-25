@@ -57,7 +57,7 @@ class UserFarmView(
         if not len(farmer):
             raise ValidationError(
                 'Seems like authenticated user is not a farmer')
-        serializer.save(farmer=farmer)
+        serializer.save(farmer=farmer[0])
 
     def get(self, request):
         return self.list(request)
