@@ -3,9 +3,10 @@ from .serializers import (
     UserSerializer,
     SignUpSerializer,
     ConfirmEmailSerializer,
-    UserFarmSerializer
+    UserFarmSerializer,
+    UserBatchSerializer
 )
-from .models import Farm
+from .models import Farm, Batch
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.shortcuts import get_object_or_404
@@ -57,6 +58,36 @@ class UserFarmView(
             raise ValidationError(
                 'Seems like authenticated user is not a farmer')
         serializer.save(farmer=farmer)
+
+    def get(self, request):
+        return self.list(request)
+
+    def post(self, request):
+        return self.create(request)
+
+
+class UserBatchView(
+        generics.GenericAPIView,
+        mixins.ListModelMixin,
+        mixins.CreateModelMixin):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = UserBatchSerializer
+
+    def get_queryset(self):
+        return Batch.objects.filter(farm__farmer__user=self.request.user)
+
+    def perform_create(self, serializer):
+        farmer = self.request.user.farmer_set.all()
+        if not len(farmer):
+            raise ValidationError(
+                'Seems like authenticated user is not a farmer')
+        farm = serializer.validated_data['farm']
+        if farm.farmer.user != self.request.user:
+            raise ValidationError(
+                'You don\'t own this farm'
+            )
+        serializer.save()
 
     def get(self, request):
         return self.list(request)

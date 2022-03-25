@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth.tokens import default_token_generator
-from .models import Farmer, Buyer, Farm
+from .models import Farmer, Buyer, Farm, Batch
 from kilola import email_credentials
 
 
@@ -136,3 +136,10 @@ class UserFarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farm
         fields = ['name', 'location', 'size']
+
+
+class UserBatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Batch
+        fields = ['crop', 'farm', 'area', 'weight', 'planting_date',
+                  'harvesting_date', 'description']

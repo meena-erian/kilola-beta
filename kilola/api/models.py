@@ -39,6 +39,9 @@ class Farm(models.Model):
         decimal_places=2
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Batch(models.Model):
     crop = models.ForeignKey(Crop, on_delete=models.RESTRICT)
@@ -48,21 +51,25 @@ class Batch(models.Model):
         max_digits=20,
         decimal_places=2
     )
+    weight = models.DecimalField(
+        "Approximately how many kgs.\
+        default is crop.yield_per_acre*area",
+        max_digits=20,
+        decimal_places=2
+    )
     planting_date = models.DateField()
     harvesting_date = models.DateField(
         "The estimated harvesting date\
         default is planting_date+crop.time_required",
     )
-    estimated_size = models.DecimalField(
-        "Approximately how many kgs.\
-        default is crop.yield_per_acre*area",
-        max_digits=20,
-        decimal_places=2
-    ),
     description = models.TextField(
         "Please accurately describe the quality of your crop\
         and any additional details that the buyer needs to know."
     )
+
+    def __str__(self):
+        return str(self.farm.farmer) + ":" + str(self.farm)\
+            + ":" + self.description
 
 
 class Buyer(models.Model):
