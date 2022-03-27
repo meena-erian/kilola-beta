@@ -22,6 +22,8 @@ urlpatterns = [
     path('login', rest_auth_views.obtain_auth_token),
     path('user', views.UserAPIView.as_view(), name='User API'),
     path('register', views.SignUpView.as_view(), name='SignUp API'),
+    path('batch/search', views.BatchSearchView.as_view(),
+         name='Search Batches API'),
     path('user/farm', views.UserFarmView.as_view(), name='User Farm API'),
     path('user/batch', views.UserBatchView.as_view(), name='User Batch API'),
     path(

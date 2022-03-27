@@ -3,8 +3,9 @@ from .serializers import (
     UserSerializer,
     SignUpSerializer,
     ConfirmEmailSerializer,
-    UserFarmSerializer,
-    UserBatchSerializer
+    FarmSerializer,
+    BatchSerializer,
+    BatchDetailsSerializer
 )
 from .models import Farm, Batch
 from rest_framework.permissions import IsAuthenticated
@@ -47,7 +48,7 @@ class UserFarmView(
         mixins.CreateModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
-    serializer_class = UserFarmSerializer
+    serializer_class = FarmSerializer
 
     def get_queryset(self):
         return Farm.objects.filter(farmer__user=self.request.user)
@@ -72,7 +73,7 @@ class UserBatchView(
         mixins.CreateModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
-    serializer_class = UserBatchSerializer
+    serializer_class = BatchSerializer
 
     def get_queryset(self):
         return Batch.objects.filter(farm__farmer__user=self.request.user)
@@ -94,3 +95,14 @@ class UserBatchView(
 
     def post(self, request):
         return self.create(request)
+
+
+class BatchSearchView(generics.GenericAPIView,
+                      mixins.ListModelMixin):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = BatchDetailsSerializer
+    queryset = Batch.objects.all()
+
+    def get(self, request):
+        return self.list(request)

@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth.tokens import default_token_generator
-from .models import Farmer, Buyer, Farm, Batch
+from .models import Farmer, Buyer, Farm, Batch, Crop
 from kilola import email_credentials
 
 
@@ -132,13 +132,42 @@ class ConfirmEmailSerializer(serializers.Serializer):
         return data
 
 
-class UserFarmSerializer(serializers.ModelSerializer):
+class FarmerSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='username'
+    )
+
+    class Meta:
+        model = Farmer
+        fields = ['user']
+
+
+class FarmSerializer(serializers.ModelSerializer):
+    farmer = FarmerSerializer(read_only=True)
+
     class Meta:
         model = Farm
-        fields = ['id', 'name', 'location', 'size']
+        fields = ['id', 'name', 'farmer', 'location', 'size']
 
 
-class UserBatchSerializer(serializers.ModelSerializer):
+class BatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Batch
+        fields = ['id', 'crop', 'farm', 'area', 'weight', 'planting_date',
+                  'harvesting_date', 'description']
+
+
+class CropSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Crop
+        fields = '__all__'
+
+
+class BatchDetailsSerializer(serializers.ModelSerializer):
+    crop = CropSerializer(read_only=True)
+    farm = FarmSerializer(read_only=True)
+
     class Meta:
         model = Batch
         fields = ['id', 'crop', 'farm', 'area', 'weight', 'planting_date',
