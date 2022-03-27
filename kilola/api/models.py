@@ -97,3 +97,11 @@ class BatchReservation(models.Model):
     approved_by_farmer = models.BooleanField(
         default=False
     )
+    logistics = models.CharField(
+        'Can be either "on_farmer", "on_buyer", or "on_kilola"',
+        max_length=100
+    )
+    logistics = models.CharField(
+        'Additional comment to farmer',
+        max_length=500
+    )
