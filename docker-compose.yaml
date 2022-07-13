@@ -6,3 +6,11 @@ services:
     volumes:
       - ./kilola:/kilola
     build: .
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
